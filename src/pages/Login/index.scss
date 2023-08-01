@@ -1,0 +1,43 @@
+.loginPage{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F5F7FA;
+    div{
+        max-width: 400px;
+        background-color: #fff;
+        padding: 30px;
+        width: 100%;
+        form{
+            display: flex;
+            flex-direction: column;
+            border-radius: 9px;
+            padding: 15px;
+            label{
+                font-size: 1.2rem;
+                margin-bottom: 6px;
+            }
+            input{
+                height: 2rem;
+                width: 100%;
+                margin-bottom: 35px;
+                border-radius: 8px;
+                padding-left: 6px;
+            }
+        }
+        button{
+            width: 100%;
+            background: #2D60FF;
+            border-radius: 6px;
+            padding-bottom: 8px;
+            color: white;
+        }
+        .error{
+            color: red;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+    }
+}

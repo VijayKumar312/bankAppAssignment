@@ -1,0 +1,236 @@
+.homePage{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    @media screen and (max-width: 600px){
+        flex-direction: column;
+    }
+    
+    .header{
+        @media screen and (max-width: 600px){
+            display: block;
+        }
+        @media screen and (min-width: 601px){
+            display: none;
+        }
+        .menuBar{
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            img{
+                height: 22px;
+                width: 120px;
+            }
+            .logo{
+                width: 35px;
+                height: 26px;
+                object-fit: contain;
+                margin-right: 6px;
+            }
+            div{
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                .logoutSection{
+                    .profile{
+                        margin-top: 5px;
+                        font-size: 13px;
+                    }                   
+                }
+            }
+        }
+        .menuBarItems{
+            height: fit-content;
+            li{
+                display: flex;
+                align-items: center;
+                padding: 8px;               
+                .img{
+                    width: 20px;
+                    margin-right: 16px;
+                    margin-left: 8px;
+                }
+                p{
+                    font-size: 13px;
+                }
+            }
+            .activeMenuTab{
+                border: 1px solid black;
+                border-left: 4px solid #2D60FF;
+                border-radius: 7px;
+            }            
+        }
+        .active{
+            display: block;
+        }
+        .inactive{
+            display: none;
+        }
+    }
+    .contentDetails{
+        background: #F5F7FA;
+        padding: 9px;
+        margin-bottom: 15px;
+        overflow-y: auto;
+        @media screen and (max-width: 576px){
+            width: 100%;
+        }
+        @media screen and (min-width: 577px) and (max-width: 767px){
+            width: 75%;
+            height: calc(100vh - 10px);
+        }
+        @media screen and (min-width: 768px){
+            width: 82%;
+        }
+        height: 100%;
+        navbar{
+            // max-width: 100%;
+            padding: 0 18px;
+            height: 50px;
+            background: #fff;
+            @media screen and (max-width: 600px){
+                display: none;
+            }
+            @media screen and (min-width: 601px){
+                display: block;
+            }
+            div{
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                p{
+                    font-weight: bold;
+                }
+                button{
+                    border-radius: 12px;
+                    background: #2D60FF;
+                    color: white;
+                    padding: 8px;
+                }
+            }
+        }
+        .tabDetailsSection{
+            width: 100%;
+            margin: 0 auto;
+            background: #F5F7FA;
+        }
+        .transactionsTab{
+            .transactionType{
+                display: flex;
+                gap: 14px;
+                align-items: center;
+                background-color: #FFF;
+                width: 100%;
+                li{
+                    color: #718EBF;
+                    text-align: center;
+                    font-family: Inter;
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: normal;
+                    cursor: pointer;
+                    @media screen and (max-width: 576px){
+                        font-size: 8px;
+                    }
+                    @media screen and (min-width: 577px) and (max-width: 767px){
+                        font-size: 12px;
+                    }
+                }
+                .active{
+                    color: #2D60FF;
+                    border-bottom: 1px solid #2D60FF;
+                }
+            }
+            .transactionHistoryList{
+                background: #FFF;
+                margin-top: 18px;
+                border-radius: 6px;
+                
+                .headings{
+                    display: flex;
+                    margin: 0 8px;
+                    p{
+                        width: 25%;
+                        font-weight: bold;
+
+                        @media screen and (max-width: 650px){
+                            font-size: 9px;
+                        }
+                    }
+                }
+            }
+            .transactions{
+                border-radius: 25px;                
+                margin: 10px;
+                max-height: 100%;
+                overflow-y: auto;
+                
+                .transactionItem {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 10px;
+                  
+                    .imageAndText {
+                      display: flex;
+                      align-items: center;
+                      width: 25%; // Adjust the percentage width as needed
+                      overflow: hidden;
+                  
+                      img {
+                        margin-right: 8px;
+                      }
+                  
+                      p {
+                        margin: 0;
+                        white-space: nowrap; // Prevent text from wrapping
+                        text-overflow: ellipsis; // Show ellipsis (...) for overflowing text
+                        overflow: hidden; // Hide overflowing text
+                      }
+                    }
+                  
+                    .category, .date, .amount {
+                      width: 15%; // Adjust the percentage width as needed
+                      overflow: hidden;
+                    }
+                  
+                    .buttons {
+                      display: flex;
+                      gap: 10px; // Add some spacing between the buttons
+                    }
+                  
+                    .buttons button {
+                      border: none;
+                      background: none;
+                      cursor: pointer;
+                    }
+                    @media screen and (max-width: 576px){
+                        img{
+                            width: 14px;
+                        }
+                        p{
+                            font-size: 7px;
+                        }
+                    }
+                    @media screen and (min-width: 577px) and (max-width: 767px){
+                        img{
+                            width: 22px;
+                        }
+                        p{
+                            font-size: 12px;
+                        }
+                    }
+                  }
+                
+            }
+        }
+        
+    }
+}
+
+
+
