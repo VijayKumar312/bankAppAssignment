@@ -1,12 +1,15 @@
 import React, {useState} from 'react'
 import DeleteTransaction from "../../../popups/deleteTransaction"
 import EditTransactionModal from '../../../popups/editTransaction'
-import { useSelector } from 'react-redux'
 
-function TransactionItem({item}) {
+function TransactionItem({item, loginId}) {
     const [deleteState, setDeleteState] = useState(false)
     const [editState, setEditState] = useState(false)
-    const {loginUserId} = useSelector(state=>state.transaction)
+
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+    const formattedDate = new Date(item.date).toLocaleDateString('en-US', options);
+    const transactionItem = {...item, date: formattedDate}
+
     const updateDeleteState=()=>{
         setDeleteState(!deleteState)
     }
@@ -17,24 +20,23 @@ function TransactionItem({item}) {
     <>
             <li className='transactionItem'>
             <div className="imageAndText">
-                <img src={item.type==='debit' ? '/transactions/debit.png' : '/transactions/credit.png'} alt={item.type} />
-                <p>{item.transaction_name}</p>
+                <img src={transactionItem.type==='debit' ? '/transactions/debit.png' : '/transactions/credit.png'} alt={transactionItem.type} />
+                <p>{transactionItem.transaction_name || transactionItem.name}</p>
             </div>
-            <p className="category">{item.category}</p>
-            <p className="date">{item.date}</p>
-            <p className="amount"><span>{item.type==='debit' ? '-' : '+'}</span>{item.amount}</p>
+            <p className="category">{transactionItem.category}</p>
+            <p className="date">{transactionItem.date}</p>
+            <p className="amount"><span>{transactionItem.type==='debit' ? '-' : '+'}</span>{transactionItem.amount}</p>
             <div className="buttons">
-                {loginUserId !==3 && <button onClick={()=>{setEditState(!editState)}}><img src="/transactions/edit.png" alt="EDIT" /></button>}
-                {loginUserId !==3 && <button onClick={()=>{setDeleteState(!deleteState)}}><img src="/transactions/delete.png" alt="DELETE" /></button>}
+                {loginId !==3 && <button onClick={()=>{setEditState(!editState)}}><img src="/transactions/edit.png" alt="EDIT" /></button>}
+                {loginId !==3 && <button onClick={()=>{setDeleteState(!deleteState)}}><img src="/transactions/delete.png" alt="DELETE" /></button>}
             </div>                            
             </li>
         {
             deleteState && <DeleteTransaction transaction={item} deleteState={deleteState} setDeleteState={updateDeleteState} />
         }
         {
-            editState && <EditTransactionModal transaction={item} editState={editState} setEditState={updateEditState} />
+            editState && <EditTransactionModal transaction={transactionItem} editState={editState} setEditState={updateEditState} />
         }
-    
     </>
          
   )

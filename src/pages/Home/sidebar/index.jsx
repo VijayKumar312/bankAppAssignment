@@ -7,12 +7,11 @@ import Logout from "../../../popups/logout"
 import './index.scss'
 import { useSelector } from 'react-redux'
 
-const sidebarTabs=[{tab: 'DASHBOARD', imgLink: '/sidebarTabs/home.jpg', display: 'Dashboard'}, {tab: 'TRANSACTIONS', imgLink: '/sidebarTabs/transfer.jpg', display: "Transactions"}, {tab: 'PROFILE', imgLink: '/sidebarTabs/profile.jpg', display: 'Profile'}]
+const sidebarTabs=[{tab: 'Dashboard', imgLink: '/sidebarTabs/home.jpg'}, {tab: 'Transactions', imgLink: '/sidebarTabs/transfer.jpg'}, {tab: 'Profile', imgLink: '/sidebarTabs/profile.jpg'}]
 
 function Sidebar({updateActiveTab, activeTab}) {
     const [logoutState, setLogout] = useState(false)
     const {loginUserId, userData} = useSelector((state)=>state.transaction)
-    console.log(userData)
     const {userProfile} = userData 
     
     const setActiveTab=(tab)=>{
@@ -33,7 +32,7 @@ function Sidebar({updateActiveTab, activeTab}) {
                     {sidebarTabs.map(item=>(
                     <li key={item.tab} className={item.tab===activeTab && 'activeTab'} onClick={()=>setActiveTab(item.tab)}>
                         <img src={item.imgLink} alt={item.tab} />
-                        {(loginUserId === 3 && item.display==='Transactions') ? (<p>All Transactions</p>) : <p>{item.display}</p> }
+                        {(loginUserId === 3 && item.tab==='Transactions') ? (<p>All Transactions</p>) : <p>{item.tab}</p> }
                     </li>
                     ))}
                 </ul>

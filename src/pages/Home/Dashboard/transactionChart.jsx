@@ -11,9 +11,9 @@ function TransactionChart({ lastSevenDaysTrans }) {
   }));
 
   return (
-    <div className='transactionsChart' style={{ height: '300px', overflow: 'hidden' }}>
+    <div className='transactionsChart' style={{ height: '300px' }}>
       <h1>Debit & Credit Overview</h1>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={400}>
         <BarChart
           data={combinedData}
           margin={{
@@ -26,7 +26,7 @@ function TransactionChart({ lastSevenDaysTrans }) {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis ticks={[0, 100, 200, 300, 400]} overflow={false} />
+          <YAxis overflow={false} />
           <Tooltip />
           <Legend />
           <Bar dataKey="credit" fill="#FCAA0B" stackId="stack" maxBarSize={20} />

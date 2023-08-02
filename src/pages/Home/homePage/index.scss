@@ -68,6 +68,15 @@
         .inactive{
             display: none;
         }
+        .addTransaction{
+            display: flex;
+            justify-content: flex-end;
+            button{
+                background: #2D60FF;;
+                border-radius: 8px;
+                font-size: 10px;
+            }
+        }
     }
     .contentDetails{
         background: #F5F7FA;

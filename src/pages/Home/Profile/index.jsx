@@ -13,8 +13,8 @@ function Profile() {
     const dispatch = useDispatch()
 
     useEffect(()=>{
-      getAdminProfile()
       getRandomProfile()
+      getAdminProfile()
     },[])
     let profileLink=''
     const getRandomProfile=()=>{
@@ -45,7 +45,7 @@ function Profile() {
   return (
     <div className='profileTab'>
         <div className='largeScreen'>
-            <img src={profileLink ? `/profile/${profileLink}` : 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600w-1095249842.jpg'} alt='profile' className='profile' />
+            <img src={'adminProfile.png'} alt='profile' className='profile' />
             <div className='profileDetails'>
                 <div>
                     <h1>Your Name</h1>

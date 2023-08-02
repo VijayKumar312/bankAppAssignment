@@ -10,10 +10,11 @@ import TransactionsList from '../transactionsList'
 import Profile from '../Profile'
 import AddTransactionModal from '../../../popups/addTransaction'
 import { useSelector } from 'react-redux'
+import Cookies from 'js-cookie'
 
-const sidebarTabs=[{tab: 'DASHBOARD', imgLink: '/sidebarTabs/home.jpg', display: 'Dashboard'}, {tab: 'TRANSACTIONS', imgLink: '/sidebarTabs/transfer.jpg', display: "Transactions"}, {tab: 'PROFILE', imgLink: '/sidebarTabs/profile.jpg', display: 'Profile'}]
+const sidebarTabs=[{tab: 'Dashboard', imgLink: '/sidebarTabs/home.jpg'}, {tab: "Transactions", imgLink: '/sidebarTabs/transfer.jpg'}, {tab: 'Profile', imgLink: '/sidebarTabs/profile.jpg' }]
 
-function HomePage() {
+function HomePage(props) {
     const [activeTab, setActiveTab] = useState(sidebarTabs[0].tab)
     const [isMenuActive, setActiveMenu] = useState(false)
     const [addTransaction, setAddTransaction] = useState(false) 
@@ -25,13 +26,17 @@ function HomePage() {
     const updateAddTransaction=()=>{
       setAddTransaction(!addTransaction)
     }
+    const onLogout=()=>{
+      Cookies.remove('BankUserToken')
+      window.location.reload()
+    }
     const returnActiveTab = () => {
         switch (activeTab) {
-          case 'DASHBOARD':
+          case 'Dashboard':
             return <Dashboard />;
-          case 'TRANSACTIONS':
+          case 'Transactions':
             return <TransactionsList />;
-          case 'PROFILE':
+          case 'Profile':
             return <Profile />;
           default:
             return null;
@@ -60,7 +65,7 @@ function HomePage() {
                           <p>Email</p>
                         </div>
                       </Popup>
-                      <FiLogOut className='logout' />
+                      <FiLogOut className='logout' onClick={onLogout} />
                   </div>
                   <button className='menuButton' onClick={()=>setActiveMenu(!isMenuActive)}><AiOutlineMenu /></button>
                 </div>
@@ -70,11 +75,12 @@ function HomePage() {
                     sidebarTabs.map(item=>(
                       <li key={item.tab} className={item.tab===activeTab && 'activeMenuTab'} onClick={()=>setActiveTab(item.tab)}>
                         <img src={item.imgLink} alt={item.tab} className="img" />
-                        <p>{item.display}</p>
+                        <p>{item.tab}</p>
                       </li>
                     ))
                   }
             </ul>
+            <div className='addTransaction'><button onClick={()=>setAddTransaction(!addTransaction)}>+ Add Transaction</button></div>
         </div>
         <div className='contentDetails'>
             <navbar>

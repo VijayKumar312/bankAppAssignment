@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { ColorRing } from 'react-loader-spinner';
 import './index.scss';
 import Cookies from 'js-cookie';
 
@@ -11,6 +12,8 @@ function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
+  const [loadingState, setLoadingState] = useState(false)
+
   const dispatch = useDispatch()
   const {loginUserId, userData} = useSelector((state)=>state.transaction)
 
@@ -21,12 +24,12 @@ function Login(props) {
     }
   },[])
 
-  const onSubmitForm = async (event) => {
-    event.preventDefault();
+  const onSubmitForm = async () => {
+    setLoadingState(true)
+    setErrMsg("")
     Cookies.remove('BankUserToken')
     const url = `https://bursting-gelding-24.hasura.app/api/rest/get-user-id?email=${email}&password=${password}`;
     const options = {
-      url,
       method: 'POST',
       headers: {
         accept: 'application/json',
@@ -36,9 +39,8 @@ function Login(props) {
       },
     };
     try {
-      const response = await axios(options);
+      const response = await axios(url, options);
       const {id} = response.data.get_user_id[0]
-      console.log(id)
       dispatch(getLoginUserId(id), getUserData({loginDetails: {email, password}}))
       const token = 'A3qQy00y8yFDq3y6N1ZQnhOPOa4msdie5EtKS1hFStar'
       Cookies.set('BankUserToken', token)
@@ -46,10 +48,10 @@ function Login(props) {
       history.replace("/")
     } catch (error) {
       console.error(error);
-      setErrMsg('An error occurred while processing the request.');
+      setErrMsg("Incorrect Username/Passowrd");
+      setLoadingState(false)
     }
   };
-  console.log(loginUserId)
 
   return (
     <div className='loginPage'>
@@ -60,7 +62,7 @@ function Login(props) {
           <label htmlFor='password'>Enter Password</label>
           <input type='password' id='password' value={password} onChange={(event) => setPassword(event.target.value)} />
         </form>
-        <button onClick={onSubmitForm}>Submit</button>
+        <button onClick={onSubmitForm}>{loadingState ? <ColorRing wrapperClass='loader' /> : 'Submit'}</button>
         <p className='error'>{errMsg}</p>
       </div>
     </div>

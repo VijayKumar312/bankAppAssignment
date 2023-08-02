@@ -3,21 +3,22 @@ const trasantionshistory = [{type: 'DEBIT', purpose: 'Spotify Subscription', cat
 const transactionSlice=createSlice({
     name: 'transactions',
     initialState: {
-        transactionsHistory: trasantionshistory,
         userData: {},
-        loginUserId: ''
+        loginUserId: '',
+        allTransactions: []
     },
     reducers: {
-        getTransactionsList: (state, action)=>{
-            state.transactionsHistory = action.payload
-        },
         getLoginUserId: (state, action)=>{
             state.loginUserId = action.payload
         },
         getUserData: (state, action)=>{
             state.userData = action.payload
+        },
+        getAllTransactions: (state, action)=>{
+            state.allTransactions = action.payload
         }
     },
 })
-export const {getTransactionsList, getLoginUserId, getUserData} = transactionSlice.actions
+
+export const {getLoginUserId, getUserData, getAllTransactions} = transactionSlice.actions
 export default transactionSlice.reducer

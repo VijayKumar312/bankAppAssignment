@@ -1,20 +1,21 @@
 import {LuLogOut} from 'react-icons/lu'
 import {MdCancel} from 'react-icons/md'
 import Popup from 'reactjs-popup';
-import Cookies from 'js-cookie';
+
 import './index.scss'
 import { useSelector, useDispatch } from 'react-redux';
-import { getUserData } from '../../store/transactionSlice';
+import { getAllTransactions, getUserData } from '../../store/transactionSlice';
 
 function DeleteTransaction({deleteState, setDeleteState, transaction}) {
-  const {loginUserId, userData} = useSelector(state=>state.transaction)
+  const {loginUserId, userData, allTransactions} = useSelector(state=>state.transaction)
   const {lastThreeTransactions} = userData
   const dispatch = useDispatch()
-    const onDeleteState=()=>{
+
+    const onDeleteState=async ()=>{
       try{
-        
         const url="https://bursting-gelding-24.hasura.app/api/rest/delete-transaction"
         const options = {
+          method: 'DELETE',
           headers: {
               accept: 'application/json',
               'Content-Type': 'application/json',
@@ -24,14 +25,17 @@ function DeleteTransaction({deleteState, setDeleteState, transaction}) {
           },
           body: JSON.stringify({id: transaction.id})
       }
-      const filteredThreeTrans = lastThreeTransactions.filter(item=>item.id!==transaction.id)
-      dispatch(getUserData({...userData, lastThreeTransactions: filteredThreeTrans}))
-      setDeleteState()
-
+       await fetch(url, options)
+      .then(()=>{console.log('Data deleted successfully')})
       }catch(err){
         console.log(err.message) 
       }
- 
+      const filteredThreeTrans = lastThreeTransactions.filter(item=>item.id!==transaction.id)
+      dispatch(getUserData({...userData, lastThreeTransactions: filteredThreeTrans}))
+
+      const filteredAllTransactions = allTransactions.filter(item=>item.id !== transaction.id)
+      dispatch(getAllTransactions(filteredAllTransactions))
+      setDeleteState()
     }
 
   return (

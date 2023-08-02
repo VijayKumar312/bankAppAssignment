@@ -2,35 +2,35 @@ import React, {useState} from 'react'
 import Popup from 'reactjs-popup';
 import { useSelector, useDispatch } from 'react-redux';
 import './index.scss'
-import axios from 'axios';
-import { getUserData } from '../../store/transactionSlice';
+import { getAllTransactions, getUserData } from '../../store/transactionSlice';
 
 const EditTransactionModal = ({ transaction, editState, setEditState }) => {
-    const [name, setName] = useState('')
+    const [name, setName] = useState(transaction.name || "")
     const [transactionType, setTransactionType] = useState('')
     const [category, setCategory] = useState('')
-    const [amount, setAmount] = useState('')
+    const [amount, setAmount] = useState(transaction.amount || "")
     const [date, setDate] = useState('')
     const dispatch = useDispatch()
 
-    const {loginUserId, userData} = useSelector((state)=>state.transaction)
+    const {loginUserId, userData, allTransactions} = useSelector((state)=>state.transaction)
     const {lastThreeTransactions} = userData
 
-    const onFormSubmit=async(event)=>{
-        event.preventDefault()
+    const onFormSubmit=()=>{
+        let standardDate = new Date(date)
+        const options = { day: 'numeric', month: 'short', year: 'numeric' };
+        const formattedDate = standardDate.toLocaleDateString('en-US', options);
         const transactionDetails = {
             id: transaction.id,
             name,
-            type:transactionType,
+            type: transactionType,
             category,
             amount,
-            date,
-            user_id: loginUserId
-     
+            date: standardDate.toISOString(),
     }
     try{
         const url="https://bursting-gelding-24.hasura.app/api/rest/update-transaction"
         const options = {
+            method: 'POST',
             headers: {
                 accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -40,15 +40,18 @@ const EditTransactionModal = ({ transaction, editState, setEditState }) => {
             },
             body: JSON.stringify(transactionDetails)
         }
-        const response = await axios.post(url, options)
-        const requiredTrans = lastThreeTransactions.filter(item=>item.id !== transaction.id)
-        dispatch(getUserData({...userData, lastThreeTransactions: [...requiredTrans, transactionDetails]}))
-        setEditState()
-
+        fetch(url, options)
+            .then((response)=>response.json())
+            .then(()=>{console.log('Data Edited Successfully')})     
     }catch(err){
         console.log(err.message)
     }
+    const requiredTrans = lastThreeTransactions.filter(item=>item.id !== transaction.id)
+    dispatch(getUserData({...userData, lastThreeTransactions: [{...transactionDetails, date: formattedDate}, ...requiredTrans ]}))
 
+    const requiredAllTrans = allTransactions.filter(item=>item.id !== transaction.id)
+    dispatch(getAllTransactions([{...transactionDetails, date: formattedDate}, ...requiredAllTrans])) 
+    setEditState()
     }
 
   return (
@@ -67,19 +70,21 @@ const EditTransactionModal = ({ transaction, editState, setEditState }) => {
                             <input className='input' type='text' value={name} id='username' onChange={(event)=>{setName(event.target.value)}} />
                             <label htmlFor='transactionType'>Transaction Type</label>
                             <select className='input' id='transactionType' onChange={(event)=>{setTransactionType(event.target.value)}}>
-                                <option className='option' value={'CREDIT'}>Credit</option>
-                                <option className='option' value={'DEBIT'}>Debit</option>
+                                <option className='option' value={'credit'}>Credit</option>
+                                <option className='option' value={'debit'}>Debit</option>
                             </select>
                             <label htmlFor='category'>Category</label>
                             <select className='input' id='category' onChange={(event)=>{setCategory(event.target.value)}}>
-                                <option className='option'>Shopping</option>
+                                <option className='option' value="shopping">Shopping</option>
+                                <option className='option' value='transfer'>Transfer</option>
+                                <option className='option' value='other'>Other</option>
                             </select>
                             <label htmlFor='amount'>Amount</label>
                             <input className='input' id='amount' type='number' onChange={(event)=>{setAmount(event.target.value)}} />
                             <label htmlFor='date'>Date</label>
                             <input className='input' id='date' type='date' onChange={(event)=>{setDate(event.target.value)}} />
                         </form>
-                        <button onClick={onFormSubmit}>Add Transaction</button>
+                        <button onClick={onFormSubmit}>Edit Transaction</button>
                     </div>
                 </div>
             </div>
